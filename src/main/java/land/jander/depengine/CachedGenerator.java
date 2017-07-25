@@ -11,7 +11,7 @@ import java.util.Map;
  * @param <K>   the type of keys
  * @param <P>   the type of products
  */
-class CachedGenerator<K, P> implements Generator<K, P> 
+class CachedGenerator<K, P> implements Generator<K, P>
 {
     private final Generator<K, P> generator;
     private P cachedValue;

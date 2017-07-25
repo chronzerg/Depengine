@@ -3,7 +3,7 @@ package land.jander.depengine;
 import java.util.Map;
 
 /**
- * A generator method which produces a 
+ * A generator method which produces a
  * desired product.
  *
  * @param <K>   the type of keys
