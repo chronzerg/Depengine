@@ -9,10 +9,10 @@ import com.google.common.collect.Sets;
  * @param <K>   the type of keys
  * @param <P>   the type of products
  */
-class GeneratorEntry<K, P>
+class Entry<K, P>
 {
-    @SuppressWarnings("unchecked")
-    public GeneratorEntry(
+    @SafeVarargs
+    public Entry(
         Generator<K, P> generator,
         Depengine<K, P>.Dependency... dependencies)
     {
@@ -20,7 +20,7 @@ class GeneratorEntry<K, P>
         this.dependencies = Sets.newHashSet(dependencies);
     }
 
-    public GeneratorEntry(
+    public Entry(
         Generator<K, P> generator,
         Set<Depengine<K, P>.Dependency> dependencies)
     {

@@ -53,13 +53,19 @@ public class Depengine<K, P>
     }
 
     private final Map<K, P> initials;
-    private final Map<K, GeneratorEntry<K, P>> entries
+    private final Map<K, Entry<K, P>> entries
         = new HashMap<>();
 
     public Depengine(String id, Map<K, P> initials)
     {
-        this.initials = initials;
         this.id = id;
+        this.initials = initials;
+    }
+
+    public Depengine(String id)
+    {
+        this.id = id;
+        this.initials = new HashMap<>();
     }
 
     /**
@@ -70,14 +76,17 @@ public class Depengine<K, P>
     /**
      * Registers a generator with this depengine.
      */
-    public void addGenerator(K key, GeneratorEntry<K, P> entry)
+    @SafeVarargs
+    public final void addGenerator(
+        K key,
+        Generator<K, P> generator,
+        Depengine<K, P>.Dependency... dependencies)
     {
         // Wrap the given generator in a CachedGenerator
         // so that any product is only generated once.
-        GeneratorEntry<K, P> cachedEntry = new GeneratorEntry<>(
-            new CachedGenerator<>(entry.generator),
-            entry.dependencies);
-        entries.put(key, cachedEntry);
+        entries.put(key, new Entry<>(
+            new CachedGenerator<>(generator),
+            dependencies));
     }
 
     /**
@@ -116,7 +125,7 @@ public class Depengine<K, P>
         // use this for generate the product.
         if (entries.containsKey(key))
         {
-            GeneratorEntry<K, P> mapping = entries.get(key);
+            Entry<K, P> mapping = entries.get(key);
             Map<K, P> dependencies = new HashMap<>();
 
             for (Depengine<K, P>.Dependency d : mapping.dependencies)
